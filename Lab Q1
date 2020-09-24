@@ -1,0 +1,418 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Predict profit for food truck"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from matplotlib import pyplot as plt\n",
+    "import pandas as pd #for dataset purpose"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#reading data\n",
+    "data=pd.read_csv(\"profitdataset.txt\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(97, 2)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(data.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>population</th>\n",
+       "      <th>profit</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>97.000000</td>\n",
+       "      <td>97.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>8.159800</td>\n",
+       "      <td>5.839135</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>3.869884</td>\n",
+       "      <td>5.510262</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>5.026900</td>\n",
+       "      <td>-2.680700</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>5.707700</td>\n",
+       "      <td>1.986900</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>6.589400</td>\n",
+       "      <td>4.562300</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>8.578100</td>\n",
+       "      <td>7.046700</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>22.203000</td>\n",
+       "      <td>24.147000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "       population     profit\n",
+       "count   97.000000  97.000000\n",
+       "mean     8.159800   5.839135\n",
+       "std      3.869884   5.510262\n",
+       "min      5.026900  -2.680700\n",
+       "25%      5.707700   1.986900\n",
+       "50%      6.589400   4.562300\n",
+       "75%      8.578100   7.046700\n",
+       "max     22.203000  24.147000"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#get x and y values\n",
+    "x=data['population'].values\n",
+    "y=data['profit'].values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#plot the data values\n",
+    "plt.scatter(x,y,40,'r',label='original data',marker='x')\n",
+    "plt.xlabel(\"population\")\n",
+    "plt.ylabel(\"profit\")\n",
+    "plt.title(\"food truck profit graph\")\n",
+    "plt.grid(True,color='k')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "8.159799999999999"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mean_x=np.mean(x)\n",
+    "mean_y=np.mean(y)\n",
+    "n=len(x)\n",
+    "mean_x"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "5.839135051546393"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mean_y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.193033644189594 -3.8957808783118537\n"
+     ]
+    }
+   ],
+   "source": [
+    "#calculate m and c values\n",
+    "num=0\n",
+    "den=0\n",
+    "for i in range(n):\n",
+    "    num=num+((x[i]-mean_x)*(y[i]-mean_y))\n",
+    "    den=den+((x[i]-mean_x)**2)\n",
+    "m=num/den\n",
+    "c=mean_y-(m*mean_x)\n",
+    "print(m,c)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 3.39377399  2.6989512   6.26719552  4.45927234  3.09515767  6.10530086\n",
+      "  5.02381586  6.33818102  3.84247394  2.13452698  2.91727635 13.00234766\n",
+      "  2.94507404  6.13572322  2.833764    2.52202431  3.69835548  2.22460102\n",
+      "  3.77494824  4.53992141  3.48802365 20.28701109  2.65409313  3.65146926\n",
+      "  2.74333205 18.70624151 11.40845471  9.17628876 11.82363042 22.59314512\n",
+      "  2.37050903  3.96559502  7.13763287  3.13333475  5.90033768  5.56903223\n",
+      "  5.7629002   2.79272364 11.41799898  3.68403908  2.55483273  4.31527318\n",
+      " 10.07225703  2.99243747  5.43934948  4.56652606  2.1531383   3.02548451\n",
+      " 10.06271276  2.71553436  5.09993141  2.43648379  4.96118159  5.17497322\n",
+      "  3.65946258  3.69060076  3.58955081  2.83257096  7.21160096  7.38268198\n",
+      "  6.63321825  2.28329828 21.49078204 13.88996469 18.72294398  4.71577457\n",
+      "  6.0005525   8.3161115   2.66518834 20.37171648  8.19680814  4.85452438\n",
+      "  3.2698178   4.72496093  2.10147995  3.91608412  5.09802255  2.11293307\n",
+      "  8.36144678  2.19787707  2.93934748  2.29415488  3.68678305  7.75860688\n",
+      "  3.87790704  6.26552528  7.05650658  3.26480705  2.69024205  2.14025354\n",
+      "  2.91369725  5.21493985  3.10816174  2.43373982  5.99852435 12.08371175\n",
+      "  2.59062374]\n"
+     ]
+    }
+   ],
+   "source": [
+    "#new y prediction\n",
+    "y_pred=np.array([])\n",
+    "\n",
+    "for i in range(n):\n",
+    "    p=m*x[i]+c\n",
+    "    y_pred=np.append(y_pred,np.array([p]),axis=0)\n",
+    "print(y_pred)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#plot the regression graph\n",
+    "plt.plot(x,y_pred,color='m',label='regression_line')\n",
+    "#plot the actual data\n",
+    "plt.scatter(x,y,40,color='g',label='actual_data',marker='o')\n",
+    "plt.xlabel(\"population\")\n",
+    "plt.ylabel(\"profit\")\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.70203155378414"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# r square method\n",
+    "nu=0\n",
+    "de=0\n",
+    "for i in range(n):\n",
+    "    nu=nu+((y_pred[i]-mean_y)**2)\n",
+    "    de=de+((y[i]-mean_y)**2)\n",
+    "r2=nu/de\n",
+    "r2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.4728705205413188"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "b=4.5\n",
+    "l=m*b+c\n",
+    "l"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3.8589378089205066"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "b1=6.5\n",
+    "l1=m*b1+c\n",
+    "l1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4.476971375975179"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#cost function\n",
+    "r=0\n",
+    "for i in range(n):\n",
+    "    r=r+((y_pred[i]-y[i])**2)\n",
+    "c_fun=(1/(2*n))*r\n",
+    "c_fun"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
